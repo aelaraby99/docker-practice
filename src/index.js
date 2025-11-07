@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const redis = require('redis');
 const {Pool , Client } = require('pg');
+const os = require('os');
 // init app
 const app = express();
 const port = process.env.PORT;
@@ -35,6 +36,7 @@ mongoose.connect(URI)
 app.get('/', (req, res) => { 
   redisClient.set('products','Meow Product')
   redisClient.set('food', 'Meow food');
+  console.log(`Traffic from ${os.hostname()}`);
   res.send(`<h1>Hello, Meow!</h1>`)
 });
 app.get('/products', async (req, res) => { 

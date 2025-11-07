@@ -1,7 +1,8 @@
-FROM node:22.15.0 as base
-
-FROM base as development
+FROM node:22.15.0 AS base
+FROM base AS development
 WORKDIR /app
+# Install network utilities for debugging
+RUN apt-get update && apt-get install -y iputils-ping && rm -rf /var/lib/apt/lists/*
 COPY package.json .
 RUN npm install
 # ARG NODE_ENV # First Way using arguments for checking the environment
@@ -10,7 +11,7 @@ COPY . .
 EXPOSE 4000
 CMD ["npm","run","start-dev"]
 
-FROM base as production
+FROM base AS production
 WORKDIR /app
 COPY package.json .
 RUN npm install --only=production
