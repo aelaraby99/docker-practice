@@ -2,7 +2,7 @@ version: "3"
 services: 
   node-app: 
     container_name: express-node-app-container
-    image: express-node-app
+    image: aelaraby999/express-node-app
     ports:
       - "4000:4000"
     env_file:
