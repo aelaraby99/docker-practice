@@ -36,7 +36,7 @@ mongoose.connect(URI)
 app.get('/', (req, res) => { 
   redisClient.set('products','Meow Product')
   redisClient.set('food', 'Meow food');
-  console.log(`Traffic from ${os.hostname()}`);
+  console.log(`Traffic from ${os.hostname()}`); // OS is a module provides information about the computer's operating system
   res.send(`<h1>Hello, Meow!</h1>`)
 });
 app.get('/products', async (req, res) => { 

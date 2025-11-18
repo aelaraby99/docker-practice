@@ -1,8 +1,29 @@
 services: 
   node-app: 
     image: aelaraby999/express-node-app
-    env_file:
-      - ./.env
+    environment:
+      - NODE_ENV=production
+      - PORT=4000
+      - REDIS_HOST=redis-db
+      - REDIS_PORT=6379
+      - DB_HOST=mongo-db
+      - DB_PORT=27017
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=P@ssw0rd
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=P@ssw0rd
+      - POSTGRES_HOST=postgres-db
+      - POSTGRES_PORT=5432
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
     depends_on:
       - mongo-db
       - postgres-db
@@ -29,7 +50,7 @@ services:
       - 8081:8081
     environment:
       ME_CONFIG_MONGODB_URL: mongodb://admin:P%40ssw0rd@mongo-db:27017/
-      ME_CONFIG_BASICAUTH_ENABLED: true
+      ME_CONFIG_BASICAUTH_ENABLED: "true"
       ME_CONFIG_BASICAUTH_USERNAME: admin
       ME_CONFIG_BASICAUTH_PASSWORD: P@ssw0rd
     depends_on:
@@ -75,4 +96,5 @@ volumes:
   postgres-db:
 networks:
   app-network:
-    driver: bridge
+    external: true
+    name: app-network
